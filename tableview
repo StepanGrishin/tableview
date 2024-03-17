@@ -1,45 +1,51 @@
-import kotlin.concurrent.thread
-import kotlinx.coroutines.*
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlin.random.Random
 
-fun main() {
-    // Запускаем фоновый поток
-    thread {
-        Thread.sleep(1000) // Задержка в 1 секунду
-        println("World")
+class MainActivity : AppCompatActivity() {
+
+    private val images = arrayOf(
+        R.drawable.image1, 
+        R.drawable.image2, 
+        R.drawable.image3, 
+        R.drawable.image4,
+        R.drawable.image5, // Добавьте столько изображений, сколько у вас есть
+        // R.drawable.image6,
+        // R.drawable.image7
+    )
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        button.setOnClickListener {
+            val randomIndex = Random.nextInt(images.size)
+            imageView.setImageResource(images[randomIndex])
+        }
     }
+} // Логика
 
-    // Основной поток
-    Thread.sleep(2000) // Задержка в 2 секунды
-    println("Hello,")
-}
+-------------------------------------- Разметка:
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/image1" />
 
-import kotlinx.coroutines.*
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Сменить изображение"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
-suspend fun fetchFirstNumber(): Int {
-    delay(1000) // Имитация задержки
-    return 10
-}
-
-suspend fun fetchSecondNumber(): Int {
-    delay(2000) // Имитация задержки
-    return 20
-}
-
-fun main() = runBlocking {
-    val startTime = System.currentTimeMillis()
-
-    // Последовательное выполнение
-    val number1 = fetchFirstNumber()
-    val number2 = fetchSecondNumber()
-    println("Последовательная сумма: ${number1 + number2}")
-    println("Время выполнения (последовательно): ${System.currentTimeMillis() - startTime} мс")
-
-    val asyncStartTime = System.currentTimeMillis()
-
-    // Асинхронное выполнение
-    val deferred1 = async { fetchFirstNumber() }
-    val deferred2 = async { fetchSecondNumber() }
-    println("Асинхронная сумма: ${deferred1.await() + deferred2.await()}")
-    println("Время выполнения (асинхронно): ${System.currentTimeMillis() - asyncStartTime} мс")
-}
+</RelativeLayout>

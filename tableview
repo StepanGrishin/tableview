@@ -1,0 +1,18 @@
+import UIKit
+
+class ViewController: UIViewController {
+    
+    @IBOutlet weak var imageView: UIImageView!
+    
+    let images = ["image1", "image2", "image3", "image4", "image5"] // названия изображений
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
+    @IBAction func showRandomImage(_ sender: UIButton) {
+        let randomIndex = Int.random(in: 0..<images.count)
+        let image = UIImage(named: images[randomIndex])
+        imageView.image = image
+    }
+}
